@@ -1,71 +1,70 @@
-import { Component } from "react";
-import { nanoid } from "nanoid";
-import phoneBookContext from "./context/phoneBookContext";
-import ContactForm from "./components/contactForm";
-import Filter from "./components/filter";
-import ContactList from "./components/contactList";
+import React, { Component } from "react";
+import shortid from "shortid";
+import toast, { Toaster } from "react-hot-toast";
 
-import {
-  GlobalStyle,
-  MainTitle,
-  SecondaryTitle,
-  PhonebookWrap,
-} from "./App.styled";
+import INITIAL_STATE from "./initial-state.json";
+import { Title } from "./components/Title/Title.styled";
+import ContactForm from "./components/ContactForm/ContactForm";
+import ContactList from "./components/ContactList/ContactList";
+import Filter from "./components/Filter/Filter";
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-    ],
+    contacts: [...INITIAL_STATE],
     filter: "",
   };
 
-  handleChange = (evt) => {
-    this.setState({ [evt.target.name]: evt.target.value });
-  };
+  formSubmitHandler = (name, number) => {
+    const { contacts } = this.state;
 
-  getSubmitForm = ({ name, number }) => {
-    const normalazedFind = name.toLowerCase();
-
-    const isName = this.state.contacts.find(
-      (contact) => contact.name.toLowerCase() === normalazedFind
-    );
-    if (isName) {
-      return alert(`${name} is already in contacts.`);
+    if (
+      contacts.some(
+        (contact) => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      toast.error(`${name} is already in contacts!`);
+      return;
     }
 
-    this.setState((prevstate) => ({
-      contacts: [{ name, number, id: nanoid(5) }, ...prevstate.contacts],
-    }));
+    this.setState((prevState) => {
+      const id = shortid.generate();
+      return { contacts: [...prevState.contacts, { id, name, number }] };
+    });
   };
 
-  deleteName = (id) => {
-    this.setState((prevstate) => ({
-      contacts: prevstate.contacts.filter((contact) => contact.id !== id),
+  filterChangeHandler = (e) => {
+    this.setState({ filter: e.target.value });
+  };
+
+  visibleContacts = () => {
+    const { filter, contacts } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  contactDeleteHandler = (id) => {
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.filter((contact) => contact.id !== id),
     }));
   };
 
   render() {
+    const { filter } = this.state;
+
     return (
-      <phoneBookContext.Provider
-        value={{
-          contacts: this.state.contacts,
-          filter: this.state.filter,
-          onDeleteName: this.deleteName,
-        }}
-      >
-        <GlobalStyle />
-        <PhonebookWrap>
-          <MainTitle>Phonebook</MainTitle>
-          <ContactForm submitForm={this.getSubmitForm} />
-          <SecondaryTitle>Contacts</SecondaryTitle>
-          <Filter handleChange={this.handleChange} filter={this.state.filter} />
-          <ContactList />
-        </PhonebookWrap>
-      </phoneBookContext.Provider>
+      <>
+        <Title>Phonebook</Title>
+        <ContactForm onSubmit={this.formSubmitHandler} />
+        <Title mt={7}>Contacts</Title>
+        <Filter value={filter} onChange={this.filterChangeHandler} />
+        <ContactList
+          list={this.visibleContacts()}
+          onContactDelete={this.contactDeleteHandler}
+        />
+        <Toaster />
+      </>
     );
   }
 }

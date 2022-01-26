@@ -1,12 +1,27 @@
-import ContacsItem from "./contactsItem";
-import { List } from "./ContactList.styled";
+import React from "react";
+import propTypes from "prop-types";
 
-const ContactList = () => {
+import { List } from "./ContactList.styled";
+import ContactItem from "../ContactItem/ContactItem";
+
+const ContactList = ({ list, onContactDelete }) => {
   return (
     <List>
-      <ContacsItem />
+      {list.map((item) => (
+        <ContactItem
+          key={item.id}
+          id={item.id}
+          name={item.name}
+          number={item.number}
+          onContactDelete={onContactDelete}
+        />
+      ))}
     </List>
   );
+};
+
+ContactList.propTypes = {
+  list: propTypes.arrayOf(propTypes.object),
 };
 
 export default ContactList;

@@ -1,18 +1,20 @@
-import PropTypes from "prop-types";
-import { Label, Input } from "./Filter.styled";
+import React from "react";
+import propTypes from "prop-types";
 
-const Filter = ({ handleChange, filter }) => {
+import { Label, Input } from "../common";
+
+const Filter = ({ value, onChange }) => {
   return (
     <Label>
       Find contacts by name
-      <Input onChange={handleChange} type="text" name="filter" value={filter} />
+      <Input type="text" value={value} onChange={onChange}></Input>
     </Label>
   );
 };
 
-export default Filter;
-
 Filter.propTypes = {
-  handleChange: PropTypes.func.isRequired,
-  filter: PropTypes.string.isRequired,
+  value: propTypes.string.isRequired,
+  onChange: propTypes.func.isRequired,
 };
+
+export default Filter;
