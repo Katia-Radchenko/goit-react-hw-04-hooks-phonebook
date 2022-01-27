@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import shortid from "shortid";
-import toast, { Toaster } from "react-hot-toast";
+import React, { Component } from 'react';
+import shortid from 'shortid';
+import toast, { Toaster } from 'react-hot-toast';
 
-import INITIAL_STATE from "./initial-state.json";
-import { Title } from "./components/Title/Title.styled";
-import ContactForm from "./components/ContactForm/ContactForm";
-import ContactList from "./components/ContactList/ContactList";
-import Filter from "./components/Filter/Filter";
+import INITIAL_STATE from './data/initial-state.json';
+import { Title } from './components/Title/Title.styled';
+import ContactForm from './components/ContactForm/ContactForm';
+import ContactList from './components/ContactList/ContactList';
+import Filter from './components/Filter/Filter';
 
 class App extends Component {
   state = {
     contacts: [...INITIAL_STATE],
-    filter: "",
+    filter: '',
   };
 
   formSubmitHandler = (name, number) => {
@@ -19,34 +19,34 @@ class App extends Component {
 
     if (
       contacts.some(
-        (contact) => contact.name.toLowerCase() === name.toLowerCase()
+        contact => contact.name.toLowerCase() === name.toLowerCase(),
       )
     ) {
       toast.error(`${name} is already in contacts!`);
       return;
     }
 
-    this.setState((prevState) => {
+    this.setState(prevState => {
       const id = shortid.generate();
       return { contacts: [...prevState.contacts, { id, name, number }] };
     });
   };
 
-  filterChangeHandler = (e) => {
+  filterChangeHandler = e => {
     this.setState({ filter: e.target.value });
   };
 
   visibleContacts = () => {
     const { filter, contacts } = this.state;
     const normalizedFilter = filter.toLowerCase();
-    return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(normalizedFilter)
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
     );
   };
 
-  contactDeleteHandler = (id) => {
-    this.setState((prevState) => ({
-      contacts: prevState.contacts.filter((contact) => contact.id !== id),
+  contactDeleteHandler = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
     }));
   };
 
