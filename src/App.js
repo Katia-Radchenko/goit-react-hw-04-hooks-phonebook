@@ -4,9 +4,9 @@ import toast, { Toaster } from 'react-hot-toast';
 
 import INITIAL_STATE from './data/initial-state.json';
 import { Title } from './components/Title/Title.styled';
-import ContactForm from './components/ContactForm/ContactForm';
-import ContactList from './components/ContactList/ContactList';
-import Filter from './components/Filter/Filter';
+import ContactForm from './components/contactForm/ContactForm';
+import ContactList from './components/contactList/ContactList';
+import Filter from './components/filter/Filter';
 
 class App extends Component {
   state = {
