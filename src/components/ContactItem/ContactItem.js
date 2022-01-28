@@ -1,8 +1,8 @@
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
+import propTypes from 'prop-types';
 
-import { Button } from "../common";
-import { Item, Wrapper, Text } from "./ContactItem.styled";
+import { Button } from '../common';
+import { Item, Wrapper, Text } from './ContactItem.styled';
 
 const ContactItem = ({ id, name, number, onContactDelete }) => {
   return (
@@ -11,7 +11,7 @@ const ContactItem = ({ id, name, number, onContactDelete }) => {
         <Text fwb>{name}</Text>
         <Text>{number}</Text>
       </Wrapper>
-      <Button onClick={() => onContactDelete(id)}>Delete</Button>
+      <Button onClick={() => onContactDelete(id, name)}>Delete</Button>
     </Item>
   );
 };
