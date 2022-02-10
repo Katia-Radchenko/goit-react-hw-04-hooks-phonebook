@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Label = styled.label`
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: ${props => props.theme.spacing(4)};
 `;

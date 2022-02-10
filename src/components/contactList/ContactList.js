@@ -1,13 +1,13 @@
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
+import propTypes from 'prop-types';
 
-import { List } from "./ContactList.styled";
-import ContactItem from "../ContactItem/ContactItem";
+import { List } from './ContactList.styled';
+import ContactItem from '../ContactItem/ContactItem';
 
 const ContactList = ({ list, onContactDelete }) => {
   return (
     <List>
-      {list.map((item) => (
+      {list.map(item => (
         <ContactItem
           key={item.id}
           id={item.id}
